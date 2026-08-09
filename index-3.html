@@ -1,0 +1,164 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sufii Store</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b0b12;color:#fff}
+nav{padding:16px 7%;display:flex;justify-content:space-between;align-items:center;background:#101018;position:sticky;top:0;z-index:5}
+.logo{font-size:24px;font-weight:800}.logo span{color:#b76cff}
+.cart{border:0;border-radius:22px;padding:10px 16px;background:#b76cff;color:#fff;font-weight:bold}
+.hero{text-align:center;padding:90px 20px;background:radial-gradient(circle at center,#7b2cbf66,transparent 55%),linear-gradient(145deg,#151522,#090910)}
+.hero h1{font-size:clamp(42px,8vw,76px);margin:15px 0}.hero h1 span{color:#b76cff}.hero p{color:#bbb;font-size:18px}
+.btn{display:inline-block;margin-top:18px;padding:14px 24px;background:#fff;color:#111;border-radius:12px;text-decoration:none;font-weight:bold}
+section{max-width:1100px;margin:auto;padding:55px 7%}.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{background:#161621;border:1px solid #ffffff12;border-radius:18px;overflow:hidden}.pic{height:190px;display:grid;place-items:center;font-size:70px;background:#b76cff12}
+.info{padding:18px}.info p{color:#aaa}.price{font-size:21px;font-weight:bold;margin:15px 0}
+.buy{width:100%;padding:12px;border:0;border-radius:10px;background:#fff;color:#111;font-weight:bold}
+footer{text-align:center;padding:35px;color:#888;border-top:1px solid #ffffff12}
+#login{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#090910;padding:20px}
+.loginbox{width:min(380px,100%);padding:28px;border-radius:20px;background:#161621;border:1px solid #ffffff15}
+.loginbox input{width:100%;padding:13px;margin:7px 0;border-radius:9px;border:1px solid #ffffff20;background:#0d0d14;color:white}
+.loginbox button{width:100%;padding:13px;margin-top:10px;border:0;border-radius:9px;background:#b76cff;color:white;font-weight:bold}
+</style>
+
+<style>
+.settingsBtn{border:1px solid #ffffff18;border-radius:22px;padding:10px 14px;background:#ffffff10;color:#fff;font-weight:bold}
+.settingsOverlay{position:fixed;inset:0;z-index:60;background:#000b;display:none;place-items:center;padding:20px}
+.settingsBox{width:min(430px,100%);max-height:90vh;overflow:auto;background:#161621;border:1px solid #ffffff18;border-radius:20px;padding:24px}
+.settingsBox h2{margin-top:0}.settingsBox label{display:block;color:#aaa;font-size:13px;margin-top:14px}
+.settingsBox input,.settingsBox select{width:100%;padding:12px;margin-top:6px;border-radius:9px;border:1px solid #ffffff20;background:#0d0d14;color:#fff}
+.settingRow{display:flex;gap:10px;margin-top:16px}.settingRow button{flex:1;padding:12px;border:0;border-radius:9px;font-weight:bold}
+.saveBtn{background:#b76cff;color:#fff}.closeBtn{background:#ffffff12;color:#ddd}
+.logoutBtn{background:#ff5252;color:#fff;width:100%;padding:12px;border:0;border-radius:9px;margin-top:12px;font-weight:bold}
+.note{font-size:12px;color:#777;margin-top:12px;line-height:1.5}
+@media(max-width:600px){.settingsBtn{font-size:0;padding:10px 12px}.settingsBtn:first-letter{font-size:16px}}
+</style>
+
+
+<style>
+#adminPanel{display:none;max-width:1100px;margin:auto;padding:30px 7%}
+.adminBox{background:#161621;border:1px solid #ffffff12;border-radius:18px;padding:22px}
+.adminBox input,.adminBox textarea{width:100%;padding:12px;margin:6px 0 10px;border-radius:9px;border:1px solid #ffffff20;background:#0d0d14;color:#fff}
+.adminBox textarea{min-height:80px;resize:vertical}.adminActions{display:flex;gap:10px;flex-wrap:wrap}.adminActions button{padding:12px 16px;border:0;border-radius:10px;font-weight:bold}
+.primary{background:#b76cff;color:#fff}.secondary{background:#ffffff12;color:#ddd}
+.preview{width:100px;height:100px;object-fit:cover;border-radius:12px;display:none;margin:8px 0}
+.productManage{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-top:18px}
+.manageCard{background:#0d0d14;border:1px solid #ffffff10;border-radius:12px;padding:12px}.manageCard img{width:100%;height:120px;object-fit:cover;border-radius:9px}
+.manageCard button{margin-top:8px;padding:9px;border:0;border-radius:8px;background:#ff5252;color:white}
+</style>
+</head>
+<body>
+
+<div id="settingsOverlay" class="settingsOverlay">
+  <div class="settingsBox">
+    <h2>⚙️ Website Settings</h2>
+    <label>Username</label>
+    <input id="newUsername" type="text" autocomplete="username" placeholder="Enter username">
+    <label>New Password</label>
+    <input id="newPassword" type="password" autocomplete="new-password" placeholder="Enter new password">
+    <label>Theme</label>
+    <select id="themeSelect" onchange="applyTheme(this.value)">
+      <option value="dark">Dark</option>
+      <option value="light">Light</option>
+    </select>
+    <div class="settingRow">
+      <button class="saveBtn" onclick="saveSettings()">Save Settings</button>
+      <button class="closeBtn" onclick="closeSettings()">Close</button>
+    </div>
+    <button class="primary" style="width:100%;padding:12px;border:0;border-radius:9px;margin-top:12px;font-weight:bold" onclick="openAdmin()">🧑‍💻 Product Manager</button><button class="logoutBtn" onclick="logout()">Logout</button>
+    <div class="note">Settings are saved in this browser. This version uses browser-side demo authentication; for a real public store, secure server-side authentication is required.</div>
+  </div>
+</div>
+
+<div id="login"><div class="loginbox">
+<h1>🛍️ Sufii Store</h1><p>Sign in to continue.</p>
+<input id="u" placeholder="Username"><input id="p" type="password" placeholder="Password">
+<button onclick="login()">Login</button><small style="color:#777;display:block;margin-top:12px">Private store access</small>
+</div></div>
+<nav><div class="logo">🛍️ <span>Sufii</span> Store</div><div style="display:flex;gap:8px;align-items:center"><button class="settingsBtn" onclick="openSettings()">⚙️ Settings</button><button class="cart">🛒 Cart <b id="count">0</b></button></nav>
+<header class="hero"><div><h1>Shop <span>Smart.</span><br>Live Better.</h1><p>Trendy products • Great prices • Easy shopping</p><a class="btn" href="#products">Explore Products ↓</a></div></header>
+
+<section id="adminPanel">
+<div class="adminBox">
+<h2>🧑‍💻 Product Manager</h2>
+<p style="color:#aaa">Add your own product picture and details.</p>
+<input id="prodName" placeholder="Product name">
+<input id="prodPrice" placeholder="Price e.g. PKR 2,999">
+<textarea id="prodDesc" placeholder="Product description"></textarea>
+<input id="prodImage" type="file" accept="image/*" onchange="previewImage(event)">
+<img id="imgPreview" class="preview">
+<div class="adminActions">
+<button class="primary" onclick="addProduct()">➕ Add Product</button>
+<button class="secondary" onclick="clearProducts()">Reset Added Products</button>
+</div>
+<div id="manageList" class="productManage"></div>
+</div>
+</section>
+
+<section id="products"><h2>🔥 Featured Products</h2><div class="products">
+<div class="card"><div class="pic">🎧</div><div class="info"><h3>Wireless Headphones</h3><p>Premium sound.</p><div class="price">PKR 2,999</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
+<div class="card"><div class="pic">⌚</div><div class="info"><h3>Smart Watch</h3><p>Modern smart features.</p><div class="price">PKR 4,499</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
+<div class="card"><div class="pic">👕</div><div class="info"><h3>Premium T-Shirt</h3><p>Comfortable everyday style.</p><div class="price">PKR 1,499</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
+<div class="card"><div class="pic">🎒</div><div class="info"><h3>Travel Backpack</h3><p>Stylish and practical.</p><div class="price">PKR 2,199</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
+</div></section><footer>© 2026 Sufii Store</footer>
+<script>
+let n=0, selectedImage='';
+const DEFAULT_USER='sufiiadmin', DEFAULT_PASS='SufiStore@2026';
+function getUser(){return localStorage.getItem('sufiiUser')||DEFAULT_USER}
+function getPass(){return localStorage.getItem('sufiiPass')||DEFAULT_PASS}
+function add(){n++;document.getElementById('count').textContent=n}
+
+function login(){
+ const u=document.getElementById('u').value.trim(),p=document.getElementById('p').value;
+ if(u===getUser()&&p===getPass()){localStorage.setItem('sufiiLoggedIn','1');document.getElementById('login').style.display='none'}
+ else alert('Invalid username or password');
+}
+function openSettings(){
+ document.getElementById('newUsername').value=getUser();document.getElementById('newPassword').value='';
+ document.getElementById('themeSelect').value=localStorage.getItem('sufiiTheme')||'dark';
+ document.getElementById('settingsOverlay').style.display='grid';
+}
+function closeSettings(){document.getElementById('settingsOverlay').style.display='none'}
+function saveSettings(){
+ const u=document.getElementById('newUsername').value.trim(),p=document.getElementById('newPassword').value;
+ if(!u)return alert('Username cannot be empty');
+ if(p&&p.length<6)return alert('Password must be at least 6 characters');
+ localStorage.setItem('sufiiUser',u);if(p)localStorage.setItem('sufiiPass',p);
+ alert('Settings saved ✓');closeSettings();
+}
+function logout(){localStorage.removeItem('sufiiLoggedIn');closeSettings();document.getElementById('login').style.display='grid'}
+function applyTheme(theme){
+ localStorage.setItem('sufiiTheme',theme);
+ if(theme==='light'){document.body.style.background='#f5f5f7';document.body.style.color='#111'}
+ else{document.body.style.background='#0b0b12';document.body.style.color='#fff'}
+}
+function openAdmin(){closeSettings();document.getElementById('adminPanel').style.display='block';document.getElementById('adminPanel').scrollIntoView({behavior:'smooth'});renderProducts()}
+function previewImage(e){
+ const f=e.target.files[0];if(!f)return;
+ const r=new FileReader();r.onload=()=>{selectedImage=r.result;const p=document.getElementById('imgPreview');p.src=selectedImage;p.style.display='block'};r.readAsDataURL(f);
+}
+function getProducts(){try{return JSON.parse(localStorage.getItem('sufiiProducts')||'[]')}catch(e){return []}}
+function addProduct(){
+ const name=document.getElementById('prodName').value.trim(),price=document.getElementById('prodPrice').value.trim(),desc=document.getElementById('prodDesc').value.trim();
+ if(!name||!price||!selectedImage)return alert('Product name, price and picture are required.');
+ const products=getProducts();products.push({id:Date.now(),name,price,desc,image:selectedImage});localStorage.setItem('sufiiProducts',JSON.stringify(products));
+ document.getElementById('prodName').value='';document.getElementById('prodPrice').value='';document.getElementById('prodDesc').value='';document.getElementById('prodImage').value='';selectedImage='';document.getElementById('imgPreview').style.display='none';
+ renderProducts();renderStoreProducts();alert('Product added ✓');
+}
+function deleteProduct(id){localStorage.setItem('sufiiProducts',JSON.stringify(getProducts().filter(p=>p.id!==id)));renderProducts();renderStoreProducts()}
+function clearProducts(){if(confirm('Delete all added products?')){localStorage.removeItem('sufiiProducts');renderProducts();renderStoreProducts()}}
+function renderProducts(){
+ const box=document.getElementById('manageList');if(!box)return;box.innerHTML='';
+ getProducts().forEach(p=>{box.innerHTML+=`<div class="manageCard"><img src="${p.image}"><b>${escapeHtml(p.name)}</b><div style="color:#aaa">${escapeHtml(p.price)}</div><button onclick="deleteProduct(${p.id})">Delete</button></div>`});
+}
+function renderStoreProducts(){
+ const products=getProducts(),container=document.querySelector('.products');if(!container)return;
+ document.querySelectorAll('.userProduct').forEach(x=>x.remove());
+ products.forEach(p=>{const card=document.createElement('article');card.className='card userProduct';card.innerHTML=`<div class="pic"><img src="${p.image}" style="width:100%;height:100%;object-fit:cover"></div><div class="info"><h3>${escapeHtml(p.name)}</h3><p>${escapeHtml(p.desc)}</p><div class="price">${escapeHtml(p.price)}</div><button class="buy" onclick="add()">Add to Cart</button></div>`;container.appendChild(card)});
+}
+function escapeHtml(s){return String(s).replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#039;'}[m]))}
+window.addEventListener('load',()=>{if(localStorage.getItem('sufiiTheme'))applyTheme(localStorage.getItem('sufiiTheme'));if(localStorage.getItem('sufiiLoggedIn')==='1')document.getElementById('login').style.display='none';renderStoreProducts()});
+</script>
+</body></html>
