@@ -1,2 +1,44 @@
-# sufii-store
-Sufii Store Website
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sufii Store</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b0b12;color:#fff}
+nav{padding:16px 7%;display:flex;justify-content:space-between;align-items:center;background:#101018;position:sticky;top:0;z-index:5}
+.logo{font-size:24px;font-weight:800}.logo span{color:#b76cff}
+.cart{border:0;border-radius:22px;padding:10px 16px;background:#b76cff;color:#fff;font-weight:bold}
+.hero{text-align:center;padding:90px 20px;background:radial-gradient(circle at center,#7b2cbf66,transparent 55%),linear-gradient(145deg,#151522,#090910)}
+.hero h1{font-size:clamp(42px,8vw,76px);margin:15px 0}.hero h1 span{color:#b76cff}.hero p{color:#bbb;font-size:18px}
+.btn{display:inline-block;margin-top:18px;padding:14px 24px;background:#fff;color:#111;border-radius:12px;text-decoration:none;font-weight:bold}
+section{max-width:1100px;margin:auto;padding:55px 7%}.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
+.card{background:#161621;border:1px solid #ffffff12;border-radius:18px;overflow:hidden}.pic{height:190px;display:grid;place-items:center;font-size:70px;background:#b76cff12}
+.info{padding:18px}.info p{color:#aaa}.price{font-size:21px;font-weight:bold;margin:15px 0}
+.buy{width:100%;padding:12px;border:0;border-radius:10px;background:#fff;color:#111;font-weight:bold}
+footer{text-align:center;padding:35px;color:#888;border-top:1px solid #ffffff12}
+#login{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#090910;padding:20px}
+.loginbox{width:min(380px,100%);padding:28px;border-radius:20px;background:#161621;border:1px solid #ffffff15}
+.loginbox input{width:100%;padding:13px;margin:7px 0;border-radius:9px;border:1px solid #ffffff20;background:#0d0d14;color:white}
+.loginbox button{width:100%;padding:13px;margin-top:10px;border:0;border-radius:9px;background:#b76cff;color:white;font-weight:bold}
+</style>
+</head>
+<body>
+<div id="login"><div class="loginbox">
+<h1>🛍️ Sufii Store</h1><p>Login to enter your store.</p>
+<input id="u" placeholder="Username"><input id="p" type="password" placeholder="Password">
+<button onclick="login()">Login</button><small style="color:#888;display:block;margin-top:12px">Demo: admin / Sufii123</small>
+</div></div>
+<nav><div class="logo">🛍️ <span>Sufii</span> Store</div><button class="cart">🛒 Cart <b id="count">0</b></button></nav>
+<header class="hero"><div><h1>Shop <span>Smart.</span><br>Live Better.</h1><p>Trendy products • Great prices • Easy shopping</p><a class="btn" href="#products">Explore Products ↓</a></div></header>
+<section id="products"><h2>🔥 Featured Products</h2><div class="products">
+<div class="card"><div class="pic">🎧</div><div class="info"><h3>Wireless Headphones</h3><p>Premium sound.</p><div class="price">PKR 2,999</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
+<div class="card"><div class="pic">⌚</div><div class="info"><h3>Smart Watch</h3><p>Modern smart features.</p><div class="price">PKR 4,499</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
+<div class="card"><div class="pic">👕</div><div class="info"><h3>Premium T-Shirt</h3><p>Comfortable everyday style.</p><div class="price">PKR 1,499</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
+<div class="card"><div class="pic">🎒</div><div class="info"><h3>Travel Backpack</h3><p>Stylish and practical.</p><div class="price">PKR 2,199</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
+</div></section><footer>© 2026 Sufii Store</footer>
+<script>
+let n=0;function add(){n++;document.getElementById('count').textContent=n}
+function login(){if(document.getElementById('u').value==='admin'&&document.getElementById('p').value==='Sufii123'){document.getElementById('login').style.display='none'}else alert('Wrong username or password')}
+</script>
+</body></html>
