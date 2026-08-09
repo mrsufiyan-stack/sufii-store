@@ -1,0 +1,70 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Sufii Store — New Design</title>
+<style>
+:root{--bg:#0b0b12;--card:#151522;--text:#fff;--muted:#aaa;--accent:#b76cff;--accent2:#6c5ce7}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,Arial,sans-serif}
+nav{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;padding:16px 7%;background:#0b0b12eF;border-bottom:1px solid #ffffff12;backdrop-filter:blur(12px)}
+.logo{font-size:24px;font-weight:800}.logo span{color:var(--accent)}
+nav a{color:#bbb;text-decoration:none;margin:0 14px}.cart{background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;border:0;padding:11px 17px;border-radius:25px;font-weight:700}
+.hero{min-height:520px;display:grid;place-items:center;text-align:center;padding:80px 20px;background:radial-gradient(circle at 50% 20%,#7b2cbf55,transparent 45%),linear-gradient(145deg,#11101c,#090910)}
+.badge{display:inline-block;padding:8px 14px;border:1px solid #ffffff20;border-radius:30px;color:#ddd;background:#ffffff08}
+.hero h1{font-size:clamp(42px,7vw,78px);line-height:1;margin:20px 0 12px}.hero h1 span{color:var(--accent)}
+.hero p{color:#b9b9c5;font-size:18px}.cta{display:inline-block;margin-top:20px;padding:14px 24px;border-radius:12px;background:#fff;color:#111;text-decoration:none;font-weight:800}
+section{max-width:1150px;margin:auto;padding:65px 7%}.title{display:flex;justify-content:space-between;align-items:end;margin-bottom:25px}.title h2{font-size:32px;margin:0}.title p{color:var(--muted)}
+.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:22px}
+.card{background:linear-gradient(160deg,#191927,#11111b);border:1px solid #ffffff10;border-radius:20px;overflow:hidden;transition:.25s}.card:hover{transform:translateY(-6px);border-color:#b76cff66}
+.pic{height:205px;display:grid;place-items:center;font-size:75px;background:radial-gradient(circle,#b76cff20,#ffffff03 60%)}
+.info{padding:20px}.info h3{margin:0 0 8px}.info p{color:var(--muted);min-height:40px}.price{font-size:21px;font-weight:800;margin:16px 0}.buy{width:100%;padding:13px;border:0;border-radius:11px;background:#fff;color:#111;font-weight:800;cursor:pointer}.buy:hover{background:var(--accent);color:white}
+.about{display:grid;grid-template-columns:1fr 1fr;gap:25px}.box{padding:28px;border-radius:20px;background:#151522;border:1px solid #ffffff10}.box h3{margin-top:0}
+footer{text-align:center;padding:35px;color:#777;border-top:1px solid #ffffff10}
+#toast{position:fixed;right:20px;bottom:20px;background:#fff;color:#111;padding:13px 18px;border-radius:12px;font-weight:700;display:none;box-shadow:0 10px 30px #0008}
+@media(max-width:700px){nav a{display:none}.about{grid-template-columns:1fr}.hero{min-height:470px}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo">🛍️ <span>Sufii</span> Store</div>
+  <div><a href="#products">Products</a><a href="#about">About</a><button class="cart">🛒 Cart <b id="count">0</b></button></div>
+</nav>
+
+<header class="hero">
+  <div>
+    <span class="badge">✨ New Collection 2026</span>
+    <h1>Shop <span>Smart.</span><br>Live Better.</h1>
+    <p>Trendy products, clean style and great prices — all in one place.</p>
+    <a class="cta" href="#products">Explore Products ↓</a>
+  </div>
+</header>
+
+<section id="products">
+  <div class="title"><div><h2>🔥 Featured Products</h2><p>Popular picks from Sufii Store</p></div></div>
+  <div class="products">
+    <article class="card"><div class="pic">🎧</div><div class="info"><h3>Wireless Headphones</h3><p>Premium sound for music lovers.</p><div class="price">PKR 2,999</div><button class="buy" onclick="add('Wireless Headphones')">Add to Cart</button></div></article>
+    <article class="card"><div class="pic">⌚</div><div class="info"><h3>Smart Watch</h3><p>Modern smart features for every day.</p><div class="price">PKR 4,499</div><button class="buy" onclick="add('Smart Watch')">Add to Cart</button></div></article>
+    <article class="card"><div class="pic">👕</div><div class="info"><h3>Premium T-Shirt</h3><p>Comfortable everyday style.</p><div class="price">PKR 1,499</div><button class="buy" onclick="add('Premium T-Shirt')">Add to Cart</button></div></article>
+    <article class="card"><div class="pic">🎒</div><div class="info"><h3>Travel Backpack</h3><p>Stylish, practical and ready to travel.</p><div class="price">PKR 2,199</div><button class="buy" onclick="add('Travel Backpack')">Add to Cart</button></div></article>
+  </div>
+</section>
+
+<section id="about">
+  <div class="box"><h3>🚚 Easy Shopping</h3><p>Choose your favorite products and add them to your cart with one tap.</p></div>
+  <div class="box"><h3>💜 Sufii Quality</h3><p>A fresh, modern storefront designed for a clean shopping experience.</p></div>
+</section>
+
+<footer>© 2026 Sufii Store • Trendy Products • Great Prices</footer>
+<div id="toast"></div>
+
+<script>
+let n=0;
+function add(name){
+ n++; document.getElementById('count').textContent=n;
+ const t=document.getElementById('toast'); t.textContent=name+' added to cart ✓'; t.style.display='block';
+ setTimeout(()=>t.style.display='none',1600);
+}
+</script>
+</body>
+</html>
