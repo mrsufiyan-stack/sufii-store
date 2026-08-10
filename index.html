@@ -1,44 +1,17 @@
-<!doctype html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Sufii Store</title>
-<style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#0b0b12;color:#fff}
-nav{padding:16px 7%;display:flex;justify-content:space-between;align-items:center;background:#101018;position:sticky;top:0;z-index:5}
-.logo{font-size:24px;font-weight:800}.logo span{color:#b76cff}
-.cart{border:0;border-radius:22px;padding:10px 16px;background:#b76cff;color:#fff;font-weight:bold}
-.hero{text-align:center;padding:90px 20px;background:radial-gradient(circle at center,#7b2cbf66,transparent 55%),linear-gradient(145deg,#151522,#090910)}
-.hero h1{font-size:clamp(42px,8vw,76px);margin:15px 0}.hero h1 span{color:#b76cff}.hero p{color:#bbb;font-size:18px}
-.btn{display:inline-block;margin-top:18px;padding:14px 24px;background:#fff;color:#111;border-radius:12px;text-decoration:none;font-weight:bold}
-section{max-width:1100px;margin:auto;padding:55px 7%}.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}
-.card{background:#161621;border:1px solid #ffffff12;border-radius:18px;overflow:hidden}.pic{height:190px;display:grid;place-items:center;font-size:70px;background:#b76cff12}
-.info{padding:18px}.info p{color:#aaa}.price{font-size:21px;font-weight:bold;margin:15px 0}
-.buy{width:100%;padding:12px;border:0;border-radius:10px;background:#fff;color:#111;font-weight:bold}
-footer{text-align:center;padding:35px;color:#888;border-top:1px solid #ffffff12}
-#login{position:fixed;inset:0;z-index:50;display:grid;place-items:center;background:#090910;padding:20px}
-.loginbox{width:min(380px,100%);padding:28px;border-radius:20px;background:#161621;border:1px solid #ffffff15}
-.loginbox input{width:100%;padding:13px;margin:7px 0;border-radius:9px;border:1px solid #ffffff20;background:#0d0d14;color:white}
-.loginbox button{width:100%;padding:13px;margin-top:10px;border:0;border-radius:9px;background:#b76cff;color:white;font-weight:bold}
-</style>
-</head>
-<body>
-<div id="login"><div class="loginbox">
-<h1>🛍️ Sufii Store</h1><p>Login to enter your store.</p>
-<input id="u" placeholder="Username"><input id="p" type="password" placeholder="Password">
-<button onclick="login()">Login</button><small style="color:#888;display:block;margin-top:12px">Demo: admin / Sufii123</small>
-</div></div>
-<nav><div class="logo">🛍️ <span>Sufii</span> Store</div><button class="cart">🛒 Cart <b id="count">0</b></button></nav>
-<header class="hero"><div><h1>Shop <span>Smart.</span><br>Live Better.</h1><p>Trendy products • Great prices • Easy shopping</p><a class="btn" href="#products">Explore Products ↓</a></div></header>
-<section id="products"><h2>🔥 Featured Products</h2><div class="products">
-<div class="card"><div class="pic">🎧</div><div class="info"><h3>Wireless Headphones</h3><p>Premium sound.</p><div class="price">PKR 2,999</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
-<div class="card"><div class="pic">⌚</div><div class="info"><h3>Smart Watch</h3><p>Modern smart features.</p><div class="price">PKR 4,499</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
-<div class="card"><div class="pic">👕</div><div class="info"><h3>Premium T-Shirt</h3><p>Comfortable everyday style.</p><div class="price">PKR 1,499</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
-<div class="card"><div class="pic">🎒</div><div class="info"><h3>Travel Backpack</h3><p>Stylish and practical.</p><div class="price">PKR 2,199</div><button class="buy" onclick="add()">Add to Cart</button></div></div>
-</div></section><footer>© 2026 Sufii Store</footer>
+<!doctype html><html><head><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sufii Store</title><style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#090910;color:#fff}nav{position:sticky;top:0;z-index:5;padding:14px 6%;background:#101018;display:flex;justify-content:space-between;align-items:center}.brand{font-size:25px;font-weight:900}.brand b,.purple{color:#b95cff}.btn{border:0;border-radius:24px;padding:12px 18px;background:#b95cff;color:#fff;font-weight:bold;margin:3px}.hero{text-align:center;padding:130px 20px;background:radial-gradient(circle,#4b176b,#090910 65%);min-height:560px}.hero h1{font-size:clamp(42px,9vw,70px);margin:0}.hero p{color:#bbb;font-size:19px}.explore{padding:17px 32px;border:0;border-radius:18px;font-weight:bold}section{padding:50px 6%;max-width:1200px;margin:auto}.products{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}.card{background:#191624;border:1px solid #30283d;border-radius:18px;overflow:hidden}.pic{height:190px;background:#242033;display:flex;align-items:center;justify-content:center;font-size:65px}.pic img{width:100%;height:100%;object-fit:cover}.info{padding:17px}.price{font-weight:bold;font-size:20px;margin:12px 0}.buy{width:100%;padding:12px;border:0;border-radius:10px;background:#b95cff;color:#fff;font-weight:bold}.modal{display:none;position:fixed;inset:0;background:#000c;z-index:20;padding:20px;overflow:auto}.box{max-width:600px;margin:30px auto;background:#171520;padding:25px;border-radius:20px}.box input{width:100%;padding:12px;margin:6px 0 14px;background:#0d0c12;color:#fff;border:1px solid #494053;border-radius:9px}.close{float:right;background:#333;color:#fff;border:0;padding:8px;border-radius:8px}footer{text-align:center;padding:30px;background:#101018;color:#888}</style></head><body>
+<nav><div class="brand">🛍️ <span id="name"><b>Sufii</b> Store</span></div><div><button class="btn" onclick="cart()">🛒 Cart <span id="count">0</span></button><button class="btn" onclick="settings()">⚙️ Settings</button></div></nav>
+<div class="hero"><h1>Shop <span class="purple">Smart.</span><br>Live Better.</h1><p id="tag">Trendy products • Great prices • Easy shopping</p><button class="explore" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Explore Products ↓</button></div>
+<section id="products"><h2>🔥 Featured Products</h2><div class="products" id="grid"></div></section><footer>© 2026 <span id="foot">Sufii Store</span></footer>
+<div class="modal" id="settings"><div class="box"><button class="close" onclick="closeM('settings')">✕</button><h2>⚙️ Store Settings</h2><label>Store Name</label><input id="sn"><label>Tagline</label><input id="st"><label>Change Logo / Store Picture</label><input id="logo" type="file" accept="image/*"><button class="btn" onclick="save()">💾 Save Changes</button><hr><h2>➕ Add Product</h2><input id="pn" placeholder="Product name"><input id="pp" placeholder="Price"><input id="pi" placeholder="Image URL (optional)"><button class="btn" onclick="add()">Add Product</button></div></div>
+<div class="modal" id="cart"><div class="box"><button class="close" onclick="closeM('cart')">✕</button><h2>🛒 Cart</h2><div id="list"></div></div></div>
 <script>
-let n=0;function add(){n++;document.getElementById('count').textContent=n}
-function login(){if(document.getElementById('u').value==='admin'&&document.getElementById('p').value==='Sufii123'){document.getElementById('login').style.display='none'}else alert('Wrong username or password')}
-</script>
-</body></html>
+let P=JSON.parse(localStorage.P||'null')||[{name:'Wireless Headphones',price:2999,icon:'🎧'},{name:'Smart Watch',price:4499,icon:'⌚'},{name:'Premium T-Shirt',price:1499,icon:'👕'},{name:'Travel Backpack',price:2199,icon:'🎒'}],C=JSON.parse(localStorage.C||'[]'),S=JSON.parse(localStorage.S||'{}');
+function render(){name.innerHTML=(S.name||'Sufii Store').replace(/Sufii/i,'<b>Sufii</b>');foot.textContent=S.name||'Sufii Store';tag.textContent=S.tag||'Trendy products • Great prices • Easy shopping';count.textContent=C.length;grid.innerHTML=P.map((p,i)=>`<div class="card"><div class="pic">${p.img?`<img src="${p.img}">`:p.icon||'🛍️'}</div><div class="info"><h3>${p.name}</h3><div class="price">PKR ${Number(p.price).toLocaleString()}</div><button class="buy" onclick="buy(${i})">Add to Cart</button></div></div>`).join('')}
+function buy(i){C.push(P[i]);localStorage.C=JSON.stringify(C);render()}
+function settings(){sn.value=S.name||'';st.value=S.tag||'';document.getElementById('settings').style.display='block'}
+function closeM(x){document.getElementById(x).style.display='none'}
+function save(){S.name=sn.value||'Sufii Store';S.tag=st.value||'Trendy products • Great prices • Easy shopping';let f=logo.files[0];if(f){let r=new FileReader();r.onload=()=>{S.logo=r.result;localStorage.S=JSON.stringify(S);render();closeM('settings')};r.readAsDataURL(f)}else{localStorage.S=JSON.stringify(S);render();closeM('settings')}}
+function add(){if(!pn.value||!pp.value)return alert('Name aur price likhein');P.push({name:pn.value,price:Number(pp.value),img:pi.value,icon:'🛍️'});localStorage.P=JSON.stringify(P);render();pn.value=pp.value=pi.value='';alert('Product added')}
+function cart(){document.getElementById('cart').style.display='block';list.innerHTML=C.length?C.map(x=>`<p>🛍️ ${x.name} — PKR ${Number(x.price).toLocaleString()}</p>`).join(''):'<p>Cart empty.</p>'}render()
+</script></body></html>
