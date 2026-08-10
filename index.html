@@ -1,14 +1,182 @@
-<!doctype html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sufii Store Marketplace</title><style>
-*{box-sizing:border-box}body{margin:0;font-family:Arial;background:#f5f6fa;color:#17131d}header{background:#17121f;color:#fff;padding:14px 5%;display:flex;gap:15px;align-items:center;position:sticky;top:0;z-index:5}.logo{font-size:25px;font-weight:900}.logo span{color:#b95cff}.search{flex:1;padding:12px 18px;border:0;border-radius:25px}.btn{border:0;border-radius:22px;padding:11px 16px;font-weight:700;cursor:pointer}.primary{background:#b95cff;color:#fff}.hero{padding:70px 7%;background:linear-gradient(135deg,#24102f,#8a38b7);color:#fff}.hero h1{font-size:clamp(38px,7vw,68px);margin:0 0 10px}.wrap{max-width:1200px;margin:auto;padding:40px 6%}.cats{display:flex;gap:10px;overflow:auto}.cat{background:#fff;border:1px solid #ddd;border-radius:22px;padding:10px 18px;white-space:nowrap}.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px}.card{background:#fff;border-radius:16px;overflow:hidden;box-shadow:0 4px 16px #0001}.pic{height:190px;background:#eee;display:flex;align-items:center;justify-content:center;font-size:65px}.info{padding:16px}.price{font-size:21px;font-weight:800;margin:9px 0}.muted{color:#777;font-size:14px}.panel{background:#fff;border-radius:18px;padding:24px;margin-top:25px}footer{background:#17121f;color:#aaa;text-align:center;padding:35px}.modal{display:none;position:fixed;inset:0;background:#0009;z-index:20;padding:20px}.modalbox{max-width:600px;margin:40px auto;background:#fff;border-radius:18px;padding:25px}.modalbox input,.modalbox select{width:100%;padding:12px;margin:7px 0 14px;border:1px solid #ddd;border-radius:9px}</style></head><body>
-<header><div class="logo">🛍️ <span>Sufii</span> Store</div><input id="search" class="search" placeholder="Search products..." oninput="render()"><button class="btn primary" onclick="openSeller()">🏪 Sell on Sufii</button><button class="btn" onclick="openCart()">🛒 <span id="count">0</span></button></header>
-<div class="hero"><h1>Shop Smart. Live Better.</h1><p>One marketplace for customers and independent sellers.</p><button class="btn primary" onclick="document.getElementById('products').scrollIntoView({behavior:'smooth'})">Shop Now</button></div>
-<div class="wrap"><div class="cats"><button class="cat" onclick="filter='All';render()">All</button><button class="cat" onclick="filter='Fashion';render()">Fashion</button><button class="cat" onclick="filter='Electronics';render()">Electronics</button><button class="cat" onclick="filter='Beauty';render()">Beauty</button><button class="cat" onclick="filter='Home';render()">Home</button></div><h2 id="products">Featured Products</h2><div id="grid" class="grid"></div><div class="panel"><h2>🏪 Create Your Store</h2><p class="muted">Apply to become a seller on Sufii Store.</p><button class="btn primary" onclick="openSeller()">Start Selling</button></div></div><footer>© 2026 Sufii Store Marketplace</footer>
-<div id="seller" class="modal"><div class="modalbox"><button class="btn" style="float:right" onclick="closeM('seller')">✕</button><h2>🏪 Create Your Store</h2><input id="sellerName" placeholder="Your name"><input id="storeName" placeholder="Store name"><input id="sellerEmail" placeholder="Email"><select id="sellerCat"><option>Fashion</option><option>Electronics</option><option>Beauty</option><option>Home</option></select><button class="btn primary" onclick="applySeller()">Submit Application</button></div></div>
-<div id="cart" class="modal"><div class="modalbox"><button class="btn" style="float:right" onclick="closeM('cart')">✕</button><h2>🛒 Cart</h2><div id="list"></div><h3 id="total"></h3></div></div>
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>MS Store Online</title>
+<style>
+*{box-sizing:border-box}body{margin:0;font-family:Arial,sans-serif;background:#f7f8fb;color:#182033;padding-bottom:82px}
+.header{height:86px;background:#ffffffee;backdrop-filter:blur(14px);border-bottom:1px solid #e8e8e8;display:flex;align-items:center;justify-content:space-between;padding:0 22px;position:sticky;top:0;z-index:50}
+.logo{font-weight:950;font-size:27px;letter-spacing:-1px;color:#111827;display:flex;align-items:center;gap:8px}.logo:before{content:'MS';display:grid;place-items:center;width:42px;height:42px;border-radius:13px;background:linear-gradient(135deg,#2563eb,#7c3aed);color:#fff;font-size:16px;box-shadow:0 8px 18px #2563eb33}.logo span{background:linear-gradient(90deg,#2563eb,#7c3aed);-webkit-background-clip:text;background-clip:text;color:transparent}
+.hamb{width:52px;height:45px;border:0;background:transparent;cursor:pointer;display:flex;flex-direction:column;justify-content:center;gap:7px}.hamb i{display:block;height:4px;width:39px;background:#172033;border-radius:5px}
+.drawer{position:fixed;top:0;right:-330px;width:310px;height:100vh;background:#fff;z-index:100;box-shadow:-10px 0 35px #0002;transition:right .35s ease;padding:24px}.drawer.open{right:0}
+.close{float:right;border:0;background:#f1f3f7;border-radius:50%;width:38px;height:38px;font-size:22px;cursor:pointer}.drawer h2{margin-top:55px}.drawer a,.drawer button{display:block;width:100%;text-align:left;padding:14px 8px;border:0;border-bottom:1px solid #eee;background:#fff;text-decoration:none;color:#172033;font-size:16px;font-weight:700;cursor:pointer}
+.overlay{position:fixed;inset:0;background:#0006;z-index:90;display:none}.overlay.show{display:block}
+.hero{margin:20px auto;max-width:1180px;padding:48px 30px;border-radius:28px;background:radial-gradient(circle at 90% 10%,#7c3aed 0,#2563eb 35%,#111827 90%);color:#fff}.hero h1{font-size:40px;margin:0 0 8px}.hero p{margin:0 0 18px}.hero a{background:#fff;color:#14203a;padding:12px 18px;border-radius:10px;text-decoration:none;font-weight:800}
+.container{max-width:1180px;margin:auto;padding:0 18px}.toolbar{background:#fff;border:1px solid #e5e7eb;border-radius:20px;padding:18px;margin:20px 0}.toolbar h2{margin:0 0 15px;font-size:24px}.sort{width:100%;padding:13px;border:2px solid #e5e7eb;border-radius:30px;font-size:17px;font-weight:700;background:#fff}
+.products{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:18px}.card{background:#fff;border:1px solid #e8eaf0;border-radius:22px;overflow:hidden;box-shadow:0 10px 30px #1118270c;transition:transform .2s,box-shadow .2s}.card:hover{transform:translateY(-5px);box-shadow:0 18px 35px #11182718}.pic{height:235px;background:linear-gradient(145deg,#f1f5ff,#f6f3ff);display:flex;align-items:center;justify-content:center;font-size:70px}.body{padding:14px}.tag{display:inline-block;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;border-radius:8px;padding:5px 9px;font-size:12px;font-weight:800}.card h3{font-size:18px;line-height:1.25;height:45px;overflow:hidden;margin:12px 0 8px}.stars{color:#f3b51b;font-size:18px}.rating{color:#7b8494;font-weight:700;margin-left:8px}.price{font-size:24px;font-weight:900;margin-top:10px}.old{text-decoration:line-through;color:#9ca3af;font-size:14px;font-weight:700}.actions{display:flex;gap:9px;margin-top:14px}.add,.view{border-radius:24px;padding:11px 16px;font-weight:900;cursor:pointer}.add{border:0;background:linear-gradient(90deg,#2563eb,#7c3aed);color:#fff;flex:1;box-shadow:0 6px 15px #2563eb25}.view{border:1px solid #e2e5eb;background:#fff;color:#182033}
+.whatsapp{position:fixed;right:20px;bottom:95px;width:64px;height:64px;border-radius:50%;background:#20d46b;color:#fff;display:flex;align-items:center;justify-content:center;font-size:35px;text-decoration:none;box-shadow:0 8px 25px #0003;z-index:40}
+.bottom{position:fixed;bottom:0;left:0;right:0;height:78px;background:#fffffff5;backdrop-filter:blur(14px);border-top:1px solid #ddd;display:grid;grid-template-columns:repeat(5,1fr);z-index:45}.bottom button{border:0;background:#fff;color:#6d7482;font-weight:800;font-size:13px;cursor:pointer}.bottom button span{display:block;font-size:27px;margin-bottom:2px}.bottom button.active{color:#2563eb}
+.login{max-width:470px;margin:35px auto;background:#fff;border-radius:20px;padding:25px}.login input{width:100%;padding:12px;margin:7px 0 13px;border:1px solid #d7dbe3;border-radius:9px}.login button{width:100%;padding:12px;background:#2563eb;color:#fff;border:0;border-radius:9px;font-weight:800}
+footer{margin-top:40px;background:#111827;color:#fff;padding:30px 20px}
+@media(min-width:850px){.products{grid-template-columns:repeat(4,minmax(0,1fr))}.pic{height:220px}.bottom{display:none}.whatsapp{bottom:30px}.hero{margin-top:30px}}
+@media(max-width:500px){.header{height:82px}.logo{font-size:23px}.hero{margin:14px 10px;padding:28px 18px}.hero h1{font-size:30px}.container{padding:0 10px}.products{gap:10px}.pic{height:175px}.card h3{font-size:16px}.price{font-size:20px}.body{padding:11px}.actions{gap:6px}.add,.view{padding:10px 8px}.whatsapp{right:18px;bottom:92px}}
+</style>
+</head>
+<body>
+<header class="header">
+  <div class="logo">MS <span>Store Online</span></div>
+  <button class="hamb" onclick="openMenu()" aria-label="Menu"><i></i><i></i><i></i></button>
+</header>
+
+<div class="overlay" id="overlay" onclick="closeMenu()"></div>
+<aside class="drawer" id="drawer">
+<button class="close" onclick="closeMenu()">×</button>
+<h2>MS Store Online</h2>
+<div style="font-size:12px;color:#8a93a3;font-weight:800;margin:12px 8px 4px;text-transform:uppercase">Main Menu</div>
+<a href="#home" onclick="showPage('home')">🏠 Home</a>
+<a href="#shop" onclick="showPage('shop')">🛍️ Shop</a>
+<a href="#categories" onclick="showPage('categories')">▦ Categories</a>
+<a href="#deals" onclick="showPage('deals')">🏷️ Deals</a>
+<a href="#new" onclick="showPage('new')">✨ New Arrivals</a>
+<a href="#contact" onclick="closeMenu()">📞 Contact</a>
+<div style="height:1px;background:#e5e7eb;margin:10px 0"></div>
+<div style="font-size:12px;color:#8a93a3;font-weight:800;margin:4px 8px;text-transform:uppercase">Shopping & Account</div>
+<button onclick="alert('Search is ready for connection')">🔍 Search</button>
+<button onclick="showPage('wishlist')">♡ Wishlist</button>
+<button onclick="showPage('cart')">🛒 Cart</button>
+<button onclick="showPage('login')">🔐 Login</button>
+<button onclick="alert('Registration form can be connected next')">📝 Register</button>
+<div style="border-top:1px solid #e5e7eb;margin-top:8px;padding-top:12px">
+<div style="font-size:12px;color:#8a93a3;font-weight:800;margin:0 8px 8px;text-transform:uppercase">Quick Login</div>
+<button onclick="alert('Google login is ready for OAuth connection')">🌈 Continue with Google</button>
+<button onclick="alert('Facebook login is ready for OAuth connection')">🔵 Continue with Facebook</button>
+</div>
+</aside>
+
+<section id="home" class="hero"><div style="font-weight:900;letter-spacing:2px;text-transform:uppercase;opacity:.85;margin-bottom:8px">MS STORE ONLINE</div><h1>Shop With Ease</h1><p>Welcome to MS Store Online — quality products at great prices.</p><a href="#shop">Shop Now</a></section>
+
+<main class="container">
+<section class="toolbar" id="shop"><h2>Showing 30 of 30 products</h2><select class="sort"><option>Newest</option><option>Price: Low to High</option><option>Price: High to Low</option></select></section>
+
+<div class="products">
 <script>
-const products=[['Wireless Headphones',2999,'Electronics','🎧','Sufii Official'],['Smart Watch',4499,'Electronics','⌚','Tech Hub'],['Premium T-Shirt',1499,'Fashion','👕','Style House'],['Travel Backpack',2199,'Fashion','🎒','Urban Bags'],['Beauty Kit',1899,'Beauty','💄','Glow Store'],['Home Lamp',1299,'Home','💡','Home World']].map(x=>({name:x[0],price:x[1],cat:x[2],icon:x[3],seller:x[4]}));let filter='All',cart=JSON.parse(localStorage.sufii_cart||'[]');
-function render(){let q=search.value.toLowerCase();let a=products.filter(p=>(filter==='All'||p.cat===filter)&&p.name.toLowerCase().includes(q));grid.innerHTML=a.map(p=>`<div class="card"><div class="pic">${p.icon}</div><div class="info"><h3>${p.name}</h3><div class="muted">Sold by ${p.seller}</div><div class="price">PKR ${p.price.toLocaleString()}</div><button class="btn primary" onclick="add('${p.name}')">Add to Cart</button></div></div>`).join('');count.textContent=cart.length}
-function add(n){cart.push(products.find(p=>p.name===n));localStorage.sufii_cart=JSON.stringify(cart);render();alert('Added to cart')}
-function openSeller(){seller.style.display='block'}function openCart(){cartModal=document.getElementById('cart');cartModal.style.display='block';list.innerHTML=cart.length?cart.map(x=>`<p>${x.icon} ${x.name} — PKR ${x.price.toLocaleString()}</p>`).join(''):'Cart is empty';total.textContent='Total: PKR '+cart.reduce((s,x)=>s+x.price,0).toLocaleString()}function closeM(x){document.getElementById(x).style.display='none'}
-function applySeller(){if(!storeName.value.trim())return alert('Store name required');localStorage.seller_application=JSON.stringify({name:sellerName.value,email:sellerEmail.value,store:storeName.value,category:sellerCat.value});alert('Application saved');closeM('seller')}render();
-</script></body></html>
+const products=[
+['🎧','Wireless Earbuds','Rs. 2,499','Rs. 3,000','Electronics'],
+['⌚','Smart Watch','Rs. 3,999','Rs. 5,000','Electronics'],
+['🔊','Bluetooth Speaker','Rs. 2,799','Rs. 3,500','Electronics'],
+['📱','Phone Holder','Rs. 799','Rs. 1,000','Mobile Accessories'],
+['🔌','Fast Charger','Rs. 1,499','Rs. 1,800','Mobile Accessories'],
+['🔋','Power Bank 20,000mAh','Rs. 3,299','Rs. 4,000','Mobile Accessories'],
+['💡','LED Room Light','Rs. 1,299','Rs. 1,700','Home & Living'],
+['🧹','Electric Cleaning Brush','Rs. 1,899','Rs. 2,400','Home & Living'],
+['🍳','Non-Stick Frying Pan','Rs. 2,299','Rs. 2,900','Kitchen'],
+['🥤','Electric Juicer','Rs. 3,499','Rs. 4,200','Kitchen'],
+['👜','Ladies Handbag','Rs. 2,199','Rs. 2,800','Fashion'],
+['👕','Men's Casual T-Shirt','Rs. 1,199','Rs. 1,500','Fashion'],
+['👟','Sports Shoes','Rs. 3,299','Rs. 4,000','Fashion'],
+['🕶️','Stylish Sunglasses','Rs. 1,499','Rs. 1,900','Fashion'],
+['🧢','Classic Cap','Rs. 899','Rs. 1,100','Fashion'],
+['👝','Leather Wallet','Rs. 1,299','Rs. 1,600','Fashion'],
+['💄','Makeup Organizer','Rs. 1,399','Rs. 1,800','Beauty'],
+['🧴','Personal Care Kit','Rs. 1,799','Rs. 2,200','Beauty'],
+['🌸','Perfume Gift Set','Rs. 2,499','Rs. 3,200','Beauty'],
+['🪥','Electric Toothbrush','Rs. 2,199','Rs. 2,700','Beauty'],
+['🎒','School Backpack','Rs. 1,999','Rs. 2,500','Bags'],
+['🧳','Travel Bag','Rs. 2,999','Rs. 3,700','Bags'],
+['🛏️','Soft Bed Sheet Set','Rs. 2,499','Rs. 3,000','Home & Living'],
+['🧺','Laundry Basket','Rs. 1,099','Rs. 1,400','Home & Living'],
+['🪴','Decorative Plant Pot','Rs. 799','Rs. 1,000','Home & Living'],
+['🧸','Soft Teddy Bear','Rs. 1,299','Rs. 1,600','Kids'],
+['🚗','Car Cleaning Kit','Rs. 1,699','Rs. 2,100','Automotive'],
+['🛠️','Multi-Purpose Tool Kit','Rs. 2,999','Rs. 3,700','Tools'],
+['📷','Mini HD Camera','Rs. 4,499','Rs. 5,500','Electronics'],
+['🎮','Wireless Game Controller','Rs. 2,699','Rs. 3,300','Gaming']
+];
+document.write(products.map((p,i)=>`<article class="card" data-product="${p[1]}"><div class="pic">${p[0]}</div><div class="body"><span class="tag">HOT</span><h3>${p[1]}</h3><div><span class="stars">☆ ☆ ☆ ☆ ☆</span><span class="rating">No ratings</span></div><div class="price">${p[2]}</div><div class="old">${p[3]}</div><div class="actions"><button class="add" onclick="addCart('${p[1]}')">🛒 Add</button><button class="view" onclick="addWish('${p[1]}')">♡ Wish</button></div></div></article>`).join(''));
+</script>
+</div>
+
+<section id="categories"><h2>Categories</h2><p>Electronics · Mobile Accessories · Fashion · Home & Living · Kitchen · Beauty · Bags · Kids · Tools · Gaming</p></section>
+<section id="deals"><h2>Deals</h2><p>Special offers will appear here.</p></section>
+<section id="new"><h2>New Arrivals</h2><p>Latest products will appear here.</p></section>
+<section id="wishlist"><h2>♡ Wishlist</h2><p>Your wishlist is empty.</p></section>
+<section id="cart"><h2>🛒 Cart</h2><p id="cartText">Your cart is empty.</p></section>
+<section id="login" class="login"><h2>Login</h2><label>Email Address</label><input type="email" placeholder="Enter your email"><label>Password</label><input type="password" placeholder="Enter your password"><p>☐ Remember me for 30 days &nbsp; <a href="#">Forgot Password?</a></p><button>Login</button>
+<div style="display:flex;align-items:center;gap:10px;margin:18px 0;color:#8a93a3"><span style="height:1px;background:#e5e7eb;flex:1"></span><b>or</b><span style="height:1px;background:#e5e7eb;flex:1"></span></div>
+<div style="display:grid;gap:10px">
+<button onclick="alert('Google login is ready for OAuth connection')" style="background:#fff;color:#172033;border:1px solid #dfe3ea">🌈 Continue with Google</button>
+<button onclick="alert('Facebook login is ready for OAuth connection')" style="background:#fff;color:#172033;border:1px solid #dfe3ea">🔵 Continue with Facebook</button>
+</div>
+<p style="text-align:center">Don't have an account? <a href="#">Create one</a></p></section>
+</main>
+
+<a class="whatsapp" href="https://wa.me/923116015350" aria-label="WhatsApp">☎</a>
+<nav class="bottom">
+<button class="active" onclick="showPage('home')"><span>🏠</span>Home</button>
+<button onclick="showPage('shop')"><span>📦</span>Shop</button>
+<button onclick="showPage('cart')"><span>🛒</span>Cart</button>
+<button onclick="showPage('wishlist')"><span>♡</span>Wishlist</button>
+<button onclick="showPage('login')"><span>🔐</span>Login</button>
+</nav>
+
+<footer id="contact"><h3>MS Store Online</h3><p>Owner: Mr Sufiyan</p><p>sufiyanms220@gmail.com</p><p>03116015350</p></footer>
+<script>
+let count=0;
+function openMenu(){drawer.classList.add('open');overlay.classList.add('show')}
+function closeMenu(){drawer.classList.remove('open');overlay.classList.remove('show')}
+function go(id){closeMenu();document.getElementById(id).scrollIntoView({behavior:'smooth'})}
+function addCart(name){count++;document.getElementById('cartText').textContent=count+' item(s): '+name+' added to cart'}
+
+<script>
+const pageIds = ['home','shop','categories','deals','new','wishlist','cart','login'];
+function showPage(id){
+  pageIds.forEach(x=>{
+    const el=document.getElementById(x);
+    if(el) el.style.display = (x===id ? '' : 'none');
+  });
+  const hero=document.querySelector('.hero');
+  if(hero) hero.style.display = (id==='home' ? '' : 'none');
+  if(id==='shop') document.getElementById('shop').scrollIntoView({behavior:'smooth'});
+  else if(id==='home') document.getElementById('home').scrollIntoView({behavior:'smooth'});
+  else {
+    const el=document.getElementById(id);
+    if(el) el.scrollIntoView({behavior:'smooth'});
+  }
+  closeMenu();
+  if(id==='cart') renderCart();
+  if(id==='wishlist') renderWishlist();
+}
+function addCart(name){
+  const a=JSON.parse(localStorage.getItem('ms_cart')||'[]');
+  a.push(name); localStorage.setItem('ms_cart',JSON.stringify(a));
+  renderCart(); updateCount(); alert(name+' added to Cart');
+}
+function addWish(name){
+  const a=JSON.parse(localStorage.getItem('ms_wishlist')||'[]');
+  if(!a.includes(name)) a.push(name);
+  localStorage.setItem('ms_wishlist',JSON.stringify(a));
+  renderWishlist(); updateCount(); alert(name+' added to Wishlist');
+}
+function renderCart(){
+  const a=JSON.parse(localStorage.getItem('ms_cart')||'[]');
+  const el=document.getElementById('cartText');
+  if(el) el.innerHTML=a.length ? '<b>'+a.length+' item(s)</b><br>'+a.map(x=>'• '+x).join('<br>') : 'Your cart is empty.';
+}
+function renderWishlist(){
+  const a=JSON.parse(localStorage.getItem('ms_wishlist')||'[]');
+  const el=document.querySelector('#wishlist p');
+  if(el) el.innerHTML=a.length ? '<b>'+a.length+' item(s)</b><br>'+a.map(x=>'• '+x).join('<br>') : 'Your wishlist is empty.';
+}
+function updateCount(){
+  const a=JSON.parse(localStorage.getItem('ms_cart')||'[]');
+  document.querySelectorAll('#count').forEach(x=>x.textContent=a.length);
+}
+document.addEventListener('DOMContentLoaded',()=>{
+  pageIds.forEach(x=>{const el=document.getElementById(x); if(el && !['home','shop'].includes(x)) el.style.display='none';});
+  showPage('home'); renderCart(); renderWishlist(); updateCount();
+});
+</script>
+
+</body>
+</html>
